@@ -1,9 +1,0 @@
-#RStudio
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-
-#Autres
-output/
-
