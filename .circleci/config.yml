@@ -49,7 +49,7 @@ jobs:
                 paths:
                     - decp-monitoring
 
-    publish:
+    createboard:
         executor: myvm_r
         steps:
             - attach_workspace:
@@ -67,12 +67,19 @@ jobs:
                 command: |
                      cd /tmp/workspace/decp-monitoring/scripts/
                      Rscript createdf.R
-                     Rscript -e "rmarkdown::render('createboard.Rmd')"
+                     Rscript -e "rmarkdown::render('createboard.Rmd', output_file='index.html')"
+
+    publish:
+        executor: myvm_bash
+        steps:
+            - attach_workspace:
+                at: /tmp/workspace
             - run:
                 name: Publication du tableau de bord sur la branche gh-pages
                 command: |
                      cd /tmp/workspace/decp-monitoring/
                      ./scripts/publish.sh
+
 
 workflows:
     version: 2
@@ -92,7 +99,7 @@ workflows:
                         only:
                             - develop
                             - master
-            - publish:
+            - createboard:
                 requires:
                     - createdb
                 filters:
@@ -100,15 +107,19 @@ workflows:
                         only:
                             - develop
                             - master
+
     daily:
         jobs:
             - build
             - createdb:
                 requires:
                     - build
-            - publish:
+            - createboard:
                 requires:
                     - createdb
+            - publish:
+                requires:
+                    - createboard
         triggers:
             - schedule:
                 cron: 0 7 * * 2,3,4,5,6

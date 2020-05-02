@@ -15,7 +15,7 @@ echo "Nb de fichiers sur data.gouv.fr : ${#results[@]}"
 [ ! -d ${DIROUT} ] && echo "Création du répertoire : ${DIROUT}" && mkdir ${DIROUT}
 
 # Contrôle du répertoire DIROUT
-nbfilesjq=$(ls -al ${DIROUT}/*.jq | wc -l)
+nbfilesjq=$(ls -al ${DIROUT}/*.jq 2> /dev/null | wc -l)
 echo "Nb de fichiers déjà présents dans ${DIROUT} : ${nbfilesjq}"
 
 # Pour chaque fichier : calcul du nombre de sources
@@ -42,4 +42,3 @@ jq --raw-output '[.date, .sources."data.gouv.fr_aife", .sources."data.gouv.fr_pe
 # Contrôle du répertoire DIROUT
 nbfilesjq=$(ls -al ${DIROUT}/*.jq | wc -l)
 echo "Nb de fichiers maintenant présents dans ${DIROUT} : ${nbfilesjq}"
-pwd

@@ -8,9 +8,9 @@ case ${CIRCLE_BRANCH} in
     master)
 
 
-    if [[ ! -f ./scripts/createboard.html ]]
+    if [[ ! -f ./scripts/index.html ]]
     then
-        echo "Le fichier agrégé ./scripts/createboard.html doit d'abord être généré par Render"
+        echo "Le fichier agrégé ./scripts/index.html doit d'abord être généré par Render"
         exit 1
     fi
 
@@ -19,9 +19,10 @@ case ${CIRCLE_BRANCH} in
     git config --global user.name "circle-bot"
     #ssh-keygen -F github.com || ssh-keyscan github.com > ~/.ssh/known_hosts
     git clone -b gh-pages https://${GITHUB_PAT}@github.com/139bercy/decp-monitoring gh-pages
-    cp scripts/createboard.html ./gh-pages/
+    rm -fr ./gh-pages/*.html
+    cp scripts/index.html ./gh-pages/
     cd ./gh-pages
-    git add createboard.html
+    git add index.html
     git commit -m "update build ${CIRCLE_BUILD_NUM} - [ci skip]"
     git push origin gh-pages
 ;;
