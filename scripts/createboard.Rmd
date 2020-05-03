@@ -9,7 +9,6 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-require(highcharter)
 require(flexdashboard)
 require(plotly)
 require(DT)
