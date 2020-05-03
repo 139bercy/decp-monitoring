@@ -1,5 +1,4 @@
 require(dplyr)
-require(highcharter)
 require(lubridate)
 
 stats <- read.csv("scripts/output/decp-stats.csv")

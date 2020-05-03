@@ -28,7 +28,7 @@ jobs:
                         git pull origin pull/$CIRCLE_PR_NUMBER/head
                     else
                         echo "Récupération de la branche master"
-                        git checkout master
+                        git checkout $CIRCLE_BRANCH
                     fi
 
             - restore_cache:
@@ -75,7 +75,9 @@ jobs:
                 command: |
                      cd /tmp/workspace/decp-monitoring/
                      ls -al
+                     echo "Création du dataframe"
                      Rscript ./scripts/createdf.R
+                     echo "Création du tableau de bord"
                      Rscript -e "rmarkdown::render('./scripts/createboard.Rmd', output_file='./scripts/index.html')"
 
     publish:
