@@ -74,11 +74,11 @@ jobs:
                 name: Construction du dataframe et du dashboard
                 command: |
                      cd /tmp/workspace/decp-monitoring/
-                     ls -al
+                     #ls -al
                      echo "Création du dataframe"
                      Rscript ./scripts/createdf.R
                      echo "Création du tableau de bord"
-                     Rscript -e "rmarkdown::render('./scripts/createboard.Rmd', output_file='./scripts/index.html')"
+                     Rscript -e "rmarkdown::render('./scripts/createboard.Rmd', output_file='index.html')"
 
     publish:
         executor: myvm_bash
