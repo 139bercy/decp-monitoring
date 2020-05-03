@@ -20,11 +20,12 @@ Depends:
     R (>= 2.10)
 Imports: 
     dplyr,
-    highcharter,
     lubridate,
     knitr,
     flexdashboard,
-    DT
+    DT,
+    plotly,
+    RColorBrewer
 Suggests: 
     testthat
 Encoding: UTF-8
