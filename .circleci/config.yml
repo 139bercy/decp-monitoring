@@ -22,7 +22,7 @@ jobs:
                     mkdir -p /tmp/workspace
                     git clone https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME workspace/decp-monitoring
                     cd workspace/decp-monitoring
-                    if [[ -n "${CIRCLE_PR_NUMBER}"]]
+                    if [[ -n "${CIRCLE_PR_NUMBER}" ]]
                     then
                         git pull origin pull/$CIRCLE_PR_NUMBER/head
                     else
