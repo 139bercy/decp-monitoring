@@ -85,7 +85,7 @@ workflows:
     version: 2
     dev:
         jobs:
-            - build:
+            - build
             - createdb:
                 requires:
                     - build
