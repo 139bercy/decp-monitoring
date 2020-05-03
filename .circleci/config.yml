@@ -86,27 +86,12 @@ workflows:
     dev:
         jobs:
             - build:
-                filters:
-                    branches:
-                        only:
-                            - develop
-                            - master
             - createdb:
                 requires:
                     - build
-                filters:
-                    branches:
-                        only:
-                            - develop
-                            - master
             - createboard:
                 requires:
                     - createdb
-                filters:
-                    branches:
-                        only:
-                            - develop
-                            - master
 
     daily:
         jobs:
