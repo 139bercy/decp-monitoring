@@ -20,9 +20,16 @@ jobs:
                 name: Récupération de decp-monitoring
                 command: |
                     mkdir -p /tmp/workspace
-                    git clone https://github.com/$CIRCLE_PROJECT_USERNAME/decp-monitoring workspace/decp-monitoring
+                    git clone https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME workspace/decp-monitoring
                     cd workspace/decp-monitoring
-                    git checkout $CIRCLE_BRANCH
+                    if [[ -n "${CIRCLE_PR_NUMBER}"]]
+                    then
+                        git pull origin pull/$CIRCLE_PR_NUMBER/head
+                    else
+                        echo "Récupération de la branche master"
+                        git checkout master
+                    fi
+
             - restore_cache:
                 keys: cache-decp-files
             - persist_to_workspace:
