@@ -2,7 +2,7 @@ require(dplyr)
 require(highcharter)
 require(lubridate)
 
-stats <- read.csv("output/decp-stats.csv")
+stats <- read.csv("scripts/output/decp-stats.csv")
 
 nrows <- nrow(stats)
 ncols <- ncol(stats)
@@ -43,7 +43,7 @@ nbmarches <- t(rbind(nbmarches, nbmarches_100J, nbmarches_30J, nbmarches_10J, nb
 colnames(nbmarches) <- c("nb", "nb_100J","nb_30J", "nb_10J", "nb_3J")
 nbmarches <- as.data.frame(nbmarches)
 
-save(stats2,stats_cumul,nbmarches, file = "output/stats.Rdata")
+save(stats2,stats_cumul,nbmarches, file = "scripts/output/stats.Rdata")
 
 
 # stats2$aife_0 <- sequence(rle(as.character(stats2$aife))$lengths)
