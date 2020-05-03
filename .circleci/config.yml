@@ -74,6 +74,7 @@ jobs:
                 name: Construction du dataframe et du dashboard
                 command: |
                      cd /tmp/workspace/decp-monitoring/
+                     ls -al
                      Rscript ./scripts/createdf.R
                      Rscript -e "rmarkdown::render('./scripts/createboard.Rmd', output_file='./scripts/index.html')"
 
