@@ -1,6 +1,6 @@
 ---
 title: "Données essentielles de la commande publique"
-author: "MEF/SG"
+author: "MEF"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -15,8 +15,8 @@ require(DT)
 require(lubridate)
 require(RColorBrewer)
 load(file = "output/stats.Rdata")
-labels <- c('aife' = "Aife / DUME", 'pes' = "DGFiP / PES marchés", 'emarchespublics' = "e-marchéspublics",
-            'grandlyon' = "Grand Lyon", 'marchespublicsinfo' = "marchéspublics.info")
+labels <- c('aife' = "Aife / DUME", 'pes' = "DGFiP / PES marchés", 'emarchespublics' = "e-MarchésPublics",
+            'grandlyon' = "Grand Lyon", 'marchespublicsinfo' = "MarchésPublics.info")
 mycolors <- brewer.pal(n = 5, name = "Accent")
 ```
 
@@ -89,16 +89,21 @@ datatable(stats2, rownames = FALSE, filter = 'top', options = list(pageLength = 
 Mentions légales
 =======================================================================
 
-## Objectifs
 
-Ce tableau de bord permet de superviser le processus de construction consolidée des données essentielles de la commande publique.
+### Objectifs
 
-## Volet technique
+Ce tableau de bord permet de superviser le processus de construction des données essentielles de la commande publique. Chaque jour, des nouvelles données sont transmises par les différents partenaires.
+
+
+### Volet technique
 Il est hébergé sur la plateforme GitHub.
 
-Il est administré par l'équipe **Bercy Hub** de la délégation au système d'information des ministères économiques et financiers, en lien avec les équipes DAJ.
+Il est administré par l'équipe **Bercy Hub** de la délégation au système d'information (DSI) des ministères économiques et financiers, en lien avec les équipes de la [délégation aux affaires juridiques (DAJ)](https://www.economie.gouv.fr/daj).
 
-## Partenaires
-Un grand merci aux équipes Aife, DGFiP et des partenaires qui publient leurs données.
+### Partenaires
+Un grand merci aux différentes équipes des partenaires qui publient leurs données.
 
 
+```{r}
+labels
+```
