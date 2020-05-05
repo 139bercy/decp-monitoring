@@ -79,7 +79,7 @@ jobs:
                      Rscript ./scripts/createdf.R
                      echo "Création du tableau de bord"
                      Rscript -e "rmarkdown::render('./scripts/createboard.Rmd', output_file='index.html')"
-                     ls -al .
+                     #ls -al .
                      ls -al scripts/
 
     publish:

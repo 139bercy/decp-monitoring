@@ -8,9 +8,9 @@ case ${CIRCLE_BRANCH} in
     master)
 
 
-    if [[ ! -f ./scripts/index.html ]]
+    if [[ ! -f index.html ]]
     then
-        echo "Le fichier agrégé ./scripts/index.html doit d'abord être généré par Render"
+        echo "Le fichier index.html n'existe pas et doit d'abord être généré par Render"
         exit 1
     fi
 
