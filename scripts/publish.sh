@@ -8,7 +8,7 @@ case ${CIRCLE_BRANCH} in
     master)
 
 
-    if [[ ! -f index.html ]]
+    if [[ ! -f  /tmp/workspace/decp-monitoring/scripts/index.html ]]
     then
         echo "Le fichier index.html n'existe pas et doit d'abord être généré par Render"
         exit 1
@@ -19,9 +19,9 @@ case ${CIRCLE_BRANCH} in
     git config --global user.name "circle-bot"
     #ssh-keygen -F github.com || ssh-keyscan github.com > ~/.ssh/known_hosts
     git clone -b gh-pages https://${GITHUB_PAT}@github.com/139bercy/decp-monitoring gh-pages
-    rm -fr ./gh-pages/*.html
-    cp index.html ./gh-pages/
-    cd ./gh-pages
+    cd gh-pages
+    rm -fr *.html
+    cp  /tmp/workspace/decp-monitoring/scripts/index.html .
     git add index.html
     git commit -m "update build ${CIRCLE_BUILD_NUM} - [ci skip]"
     git push origin gh-pages
