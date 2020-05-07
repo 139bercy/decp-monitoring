@@ -64,7 +64,7 @@ plot_ly(stats_cumul, x= ~date, y= ~aife, mode= 'lines', type='scatter', name = l
   add_trace(y= ~pes, name = labels['pes']) %>%
   add_trace(y= ~emarchespublics, name = labels['emarchespublics']) %>%
   add_trace(y= ~grandlyon, name = labels['grandlyon']) %>%
-  layout(yaxis=y, xaxis=x, autosize=T, hovermode="closest", legend=list(x=0.1, y=0.95), colorway = mycolors)
+  layout(yaxis=y, xaxis=x, autosize=T, hovermode="closest", legend=list(x=0.05, y=0.95), colorway = mycolors)
 ```
 
 ### Répartition des marchés par source
@@ -85,33 +85,49 @@ plot_ly(df, labels = ~labels, values = ~values, type = "pie", hole=0.6,
 Données {data-icon="fa-table"}
 =======================================================================
 
-Tableau de comptage des marchés réceptionnés par jour via les différents canaux
+Tableau de comptage des marchés réceptionnés par jourtransmis par les différents partenaires
 
 ```{r}
-datatable(stats2, rownames = FALSE, filter = 'top', options = list(pageLength = 20))
+stats2 <- stats2[order(rev(stats2$date)),]
+colnames(stats2) <- c('Date', labels)
+datatable(stats2, rownames = FALSE,  options = list(pageLength = 15))
 ```
 
 
 
 
-Mentions légales
+Informations {data-icon="ion-information-circled"}
 =======================================================================
 
 
-### Objectifs
-
-Ce tableau de bord permet de superviser le processus de construction des données essentielles de la commande publique. Chaque jour, des nouvelles données sont transmises par les différents partenaires.
+### Les données essentielles de la commande publique
 
 
-### Volet technique
-Il est hébergé sur la plateforme GitHub.
+#### Objectifs
 
-Il est administré par l'équipe **Bercy Hub** de la délégation au système d'information (DSI) des ministères économiques et financiers, en lien avec les équipes de la [délégation aux affaires juridiques (DAJ)](https://www.economie.gouv.fr/daj).
+Ce tableau de bord permet de superviser le processus de construction des données essentielles de la commande publique. Chaque jour, des nouvelles données sont transmises par les différents partenaires. Elles sont consolidées et mises à disposition en *opendata*.
+
+
+#### Hébergement
+Ce tableau de bord est hébergé sur la plateforme GitHub.
+
+Il est administré par l'équipe *Bercy Hub* de la délégation au système d'information (DSI) des ministères économiques et financiers, en lien avec les équipes de la [délégation aux affaires juridiques (DAJ)](https://www.economie.gouv.fr/daj).
+
+
+#### Innovations ouvertes 
+
+Les demandes d'amélioration  peuvent être soumises via une [*issue*](https://github.com/139bercy/decp-monitoring/issues).
+
+Les développeurs peuvent également proposer des évolutions via une [*pull request*](https://github.com/139bercy/decp-monitoring/pulls).
+
 
 ### Partenaires
-Un grand merci aux différentes équipes des partenaires qui publient leurs données.
+Un grand merci aux différentes équipes des partenaires qui publient leurs données sur les différents profils acheteurs.
 
-
-```{r}
-labels
+```{r results='asis'}
+for (i in 1:length(labels)) {
+  cat("* ", labels[i], "\n")
+}
 ```
+
+Les partenaires qui souhaitent publier également leurs données sont invités à prendre contact auprès des [équipes de la DAJ](mailto:commande.publique@data.gouv.fr).
