@@ -68,7 +68,6 @@ jobs:
                      apt update
                      apt install ssh-client -y --no-install-recommends
                      cd /tmp/workspace/decp-monitoring
-                     # R -e "install.packages('remotes')"
                      R -e "remotes::install_deps(dependencies = TRUE)"
             - run:
                 name: Construction du dataframe et du dashboard
@@ -81,6 +80,10 @@ jobs:
                      Rscript -e "rmarkdown::render('./scripts/createboard.Rmd', output_file='index.html')"
                      #ls -al .
                      ls -al scripts/
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                    - decp-monitoring
 
     publish:
         executor: myvm_bash
