@@ -66,7 +66,7 @@ jobs:
                 name: Mise à jour de l'image docker
                 command: |
                      apt update
-                     apt install ssh-client -y --no-install-recommends
+                     apt install ssh-client libxt -y --no-install-recommends
                      cd /tmp/workspace/decp-monitoring
                      # R -e "install.packages('remotes')"
                      R -e "remotes::install_deps(dependencies = TRUE)"
