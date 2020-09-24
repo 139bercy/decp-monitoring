@@ -27,8 +27,7 @@ jobs:
                     if [[ -n "${CIRCLE_PR_NUMBER}" ]]
                     then
                         echo "Récupération de la PR ${CIRCLE_PR_NUMBER}"
-                        git pull --no-commit && git commit -m "Merge"
-                        git pull origin pull/$CIRCLE_PR_NUMBER/head
+                        git pull --no-commit origin pull/$CIRCLE_PR_NUMBER/head
                     else
                         echo "Récupération de la branche master"
                         git checkout $CIRCLE_BRANCH
