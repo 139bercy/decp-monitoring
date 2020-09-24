@@ -21,6 +21,8 @@ jobs:
                 command: |
                     mkdir -p /tmp/workspace
                     git clone https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME workspace/decp-monitoring
+                    git config --global user.email "stephane.trainel@gmail.com"
+                    git config --global user.name "Stéphane Trainel"
                     cd workspace/decp-monitoring
                     if [[ -n "${CIRCLE_PR_NUMBER}" ]]
                     then
