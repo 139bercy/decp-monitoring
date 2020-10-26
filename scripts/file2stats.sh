@@ -4,8 +4,8 @@
 DIROUT=output
 FILEOUT=decp-stats.csv
 
-# Lecture des fichiers quotidens DECP sur data.gouv.fr
-echo "Lecture du datasets DECP sur data.gouv.fr"h
+# Lecture des fichiers quotidens DECP sur data.gouv.fr
+echo "Lecture du datasets DECP sur data.gouv.fr"
 results=( $(curl -sS -X GET "https://www.data.gouv.fr/api/1/datasets/donnees-essentielles-de-la-commande-publique-fichiers-consolides/" -H "accept: application/json" | jq '.resources[]|select(.format == "json" and .type == "update")|.url') )
 
 # Vérification du nombre de fichiers traités
@@ -13,6 +13,10 @@ echo "Nb de fichiers sur data.gouv.fr : ${#results[@]}"
 
 # Création du répertoire si absent
 [ ! -d ${DIROUT} ] && echo "Création du répertoire : ${DIROUT}" && mkdir ${DIROUT}
+
+# Suppression des anciens fichiers pour faciliter la reprise sur incident
+echo "Suppresion des anciens fichiers pour recalculer les statistiques"
+find ${DIROUT} -mtime +100 -exec rm -f {} \;
 
 # Contrôle du répertoire DIROUT
 nbfilesjq=$(ls -al ${DIROUT}/*.jq 2> /dev/null | wc -l)
