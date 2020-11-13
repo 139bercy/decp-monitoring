@@ -19,7 +19,8 @@ stats2[is.na(stats2)] <- 0
 
 stats_cumul <- stats2 %>%
   mutate(aife=cumsum(aife), pes=cumsum(pes), emarchespublics=cumsum(emarchespublics),
-         grandlyon=cumsum(grandlyon), marchespublicsinfo=cumsum(marchespublicsinfo))
+         grandlyon=cumsum(grandlyon), marchespublicsinfo=cumsum(marchespublicsinfo),
+         atexomaximilien=cumsum(atexomaximilien), ternumbfc=cumsum(ternumbfc))
 
 nrows <- nrow(stats2)
 
