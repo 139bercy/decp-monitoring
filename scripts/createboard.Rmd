@@ -16,7 +16,7 @@ require(lubridate)
 require(RColorBrewer)
 load(file = "output/stats.Rdata")
 labels <- c('aife' = "Aife / DUME", 'pes' = "DGFiP / PES marchés", 'emarchespublics' = "e-MarchésPublics",
-            'grandlyon' = "Grand Lyon", 'marchespublicsinfo' = "MarchésPublics.info", 'atexomaximilien'="Atexo-Maximilien", 'ternumbfc' ="Ternum-BFC")
+            'grandlyon' = "Grand Lyon", 'marchespublicsinfo' = "MarchésPublics.info", 'atexomaximilien'="Atexo-Maximilien", 'ternumbfc' ="Ternum-BFC", 'megalisbretagne'="Megalis-Bretagne")
 mycolors <- brewer.pal(n = 5, name = "Accent")
 ```
 
@@ -66,6 +66,7 @@ plot_ly(stats_cumul, x= ~date, y= ~aife, mode= 'lines', type='scatter', name = l
   add_trace(y= ~grandlyon, name = labels['grandlyon']) %>%
   add_trace(y= ~atexomaximilien, name = labels['atexomaximilien']) %>%
   add_trace(y= ~ternumbfc, name = labels['ternumbfc']) %>%
+  add_trace(y= ~megalisbretagne, name = labels['megalisbretagne']) %>%
   layout(yaxis=y, xaxis=x, autosize=T, hovermode="closest", legend=list(x=0.05, y=0.95), colorway = mycolors)
 ```
 
