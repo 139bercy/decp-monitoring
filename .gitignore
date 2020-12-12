@@ -1,10 +1,14 @@
-#RStudio
+# RStudio
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 
-#Autres
+# Shiny
+createboard.html
+
+# Data
 output/
 *.csv
+*.jq
 

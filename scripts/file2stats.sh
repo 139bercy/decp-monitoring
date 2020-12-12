@@ -40,7 +40,7 @@ done
 
 # Export en CSV : d'abord l'entête, puis les données
 echo "Création du fichier CSV contenant les comptages par jour et par partenaire"
-echo "date,aife,pes,emarchespublics,grandlyon,marchespublicsinfo,atexomaximilien,ternumbfc,megalisbretagne" > ${DIROUT}/${FILEOUT}
+echo "date,aife_dume,dgfip_pes,emarchespublics,grandlyon,marchespublicsinfo,atexomaximilien,ternumbfc,megalisbretagne" > ${DIROUT}/${FILEOUT}
 jq --raw-output '[.date, .sources."data.gouv.fr_aife", .sources."data.gouv.fr_pes" , .sources."e-marchespublics", .sources."grandlyon", .sources."marches-publics.info", .sources."atexo-maximilien", .sources."ternum-bfc", .sources."megalis-bretagne"] | @csv' ${DIROUT}/*.jq >> ${DIROUT}/${FILEOUT}
 
 # Contrôle du répertoire DIROUT

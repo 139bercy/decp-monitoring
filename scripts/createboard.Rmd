@@ -11,13 +11,18 @@ output:
 ```{r setup, include=FALSE}
 require(flexdashboard)
 require(plotly)
+require(dplyr)
 require(DT)
 require(lubridate)
 require(RColorBrewer)
+require(reshape)
 load(file = "output/stats.Rdata")
-labels <- c('aife' = "Aife / DUME", 'pes' = "DGFiP / PES marchés", 'emarchespublics' = "e-MarchésPublics",
-            'grandlyon' = "Grand Lyon", 'marchespublicsinfo' = "MarchésPublics.info", 'atexomaximilien'="Atexo-Maximilien", 'ternumbfc' ="Ternum-BFC", 'megalisbretagne'="Megalis-Bretagne")
-mycolors <- brewer.pal(n = 5, name = "Accent")
+labels <- c('aife_dume' = "Aife / DUME", 'dgfip_pes' = "DGFiP / PES marchés",
+            'emarchespublics' = "e-MarchésPublics", 'grandlyon' = "Grand Lyon", 
+            'marchespublicsinfo' = "MarchésPublics.info", 'atexomaximilien'="Atexo-Maximilien",
+            'ternumbfc' = "Ternum-BFC", 'megalisbretagne' = "Megalis-Bretagne")
+mycolors <- brewer.pal(n = length(labels), name = "Accent")
+nbmarches_max_paran = 300000
 ```
 
 Dashboard {data-icon="fa-signal"}
@@ -34,6 +39,11 @@ valueBox(sum(nbmarches$nb), icon = "ion-android-folder-open")
 ### marchés publiés les 10 derniers jours
 ```{r}
 valueBox(sum(nbmarches$nb_10J), icon = "ion-ios-clock-outline")
+```
+
+### marchés publiés les 365 derniers jours
+```{r}
+valueBox(sum(nbmarches$nb_365J), icon = "ion-arrow-graph-up-right")
 ```
 
 ### partenaires sans données depuis 10 jours
@@ -58,15 +68,16 @@ x <- list(title = "date de récupération des données",
             )
           ),
           rangeslider = list(type = 'date'))
-plot_ly(stats_cumul, x= ~date, y= ~aife, mode= 'lines', type='scatter', name = labels['aife'], 
-        stackgroup = 1) %>%
-  add_trace(y= ~marchespublicsinfo, name = labels['marchespublicsinfo']) %>%
-  add_trace(y= ~pes, name = labels['pes']) %>%
-  add_trace(y= ~emarchespublics, name = labels['emarchespublics']) %>%
-  add_trace(y= ~grandlyon, name = labels['grandlyon']) %>%
-  add_trace(y= ~atexomaximilien, name = labels['atexomaximilien']) %>%
-  add_trace(y= ~ternumbfc, name = labels['ternumbfc']) %>%
-  add_trace(y= ~megalisbretagne, name = labels['megalisbretagne']) %>%
+
+stats_reshape <- reshape(data=stats_cumul, idvar="date", varying = setdiff(colnames(stats_cumul), "date"),
+                 v.name=c("nbmarches"), timevar="source",
+                 times=setdiff(colnames(stats_cumul), "date"), direction="long")
+
+stats_reshape %>%
+  group_by(date, source) %>%
+  summarise(models=sum(nbmarches)) %>%
+  plot_ly(x=~date, y=~models, group=~source, name = ~labels[source], 
+          type="scatter",color=~source, mode="lines", stackgroup=1)%>%
   layout(yaxis=y, xaxis=x, autosize=T, hovermode="closest", legend=list(x=0.05, y=0.95), colorway = mycolors)
 ```
 
@@ -77,7 +88,7 @@ colnames(df) <- c('values')
 df <- as.data.frame(df)
 df$labels <- rownames(df)
 df$labels <- labels[df$labels]
-plot_ly(df, labels = ~labels, values = ~values, type = "pie", hole=0.6,
+plot_ly(df, labels = ~labels, values = ~values, type = "pie", hole=0.6, direction="clockwise",
         textposition = 'inside', textinfo = 'label+percent', hoverinfo = 'text',
         text = ~paste(labels, ' : ', values, ' marchés transmis'), showlegend = FALSE) %>%
   layout(autosize=T, colorway = mycolors)
@@ -87,15 +98,13 @@ plot_ly(df, labels = ~labels, values = ~values, type = "pie", hole=0.6,
 Données {data-icon="fa-table"}
 =======================================================================
 
-Tableau de comptage des marchés réceptionnés par jourtransmis par les différents partenaires
+Tableau de comptage des marchés réceptionnés par jour et transmis par les différents partenaires
 
 ```{r}
-stats2 <- stats2[order(rev(stats2$date)),]
-colnames(stats2) <- c('Date', labels)
-datatable(stats2, rownames = FALSE,  options = list(pageLength = 15))
+stats3 <- stats2[order(rev(stats2$date)),]
+colnames(stats3) <- c('Date', labels)
+DT::datatable(stats3, rownames = FALSE,  options = list(pageLength = 15))
 ```
-
-
 
 
 Informations {data-icon="ion-information-circled"}
@@ -107,8 +116,15 @@ Informations {data-icon="ion-information-circled"}
 
 #### Objectifs
 
-Ce tableau de bord permet de superviser le processus de construction des données essentielles de la commande publique. Chaque jour, des nouvelles données sont transmises par les différents partenaires. Elles sont consolidées et mises à disposition en *opendata*.
+Ce tableau de bord permet de superviser le processus de construction du fichier global des données essentielles de la commande publique. Chaque jour, des nouvelles données sont transmises par les différents partenaires. Elles sont consolidées et mises à disposition en *opendata* sur [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-essentielles-de-la-commande-publique-fichiers-consolides/).
 
+Chaque année, il y a environ 300 000 marchés publics de plus de 40 000 euros HT.
+
+```{r}
+gauge(sum(nbmarches$nb_365J), min = 0, max = 300000, symbol = '', gaugeSectors(
+  success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
+))
+```
 
 #### Hébergement
 Ce tableau de bord est hébergé sur la plateforme GitHub.
@@ -118,7 +134,7 @@ Il est administré par l'équipe *Bercy Hub* de la délégation au système d'in
 
 #### Innovations ouvertes 
 
-Les demandes d'amélioration  peuvent être soumises via une [*issue*](https://github.com/139bercy/decp-monitoring/issues).
+Les demandes d'amélioration peuvent être soumises via une [*issue*](https://github.com/139bercy/decp-monitoring/issues).
 
 Les développeurs peuvent également proposer des évolutions via une [*pull request*](https://github.com/139bercy/decp-monitoring/pulls).
 
