@@ -14,9 +14,12 @@ echo "Nb de fichiers sur data.gouv.fr : ${#results[@]}"
 # Création du répertoire si absent
 [ ! -d ${DIROUT} ] && echo "Création du répertoire : ${DIROUT}" && mkdir ${DIROUT}
 
-# Suppression des anciens fichiers pour faciliter la reprise sur incident
+# Suppression des anciens fichiers JQ pour faciliter la reprise sur incident
 echo "Suppresion des anciens fichiers pour recalculer les statistiques"
 find ${DIROUT} -mtime +100 -exec rm -f {} \;
+
+# Suppression de tous les fichiers JQ
+find ${DIROUT}/*.jq -exec rm -f {} \;
 
 # Contrôle du répertoire DIROUT
 nbfilesjq=$(ls -al ${DIROUT}/*.jq 2> /dev/null | wc -l)
@@ -46,3 +49,6 @@ jq --raw-output '[.date, .sources."data.gouv.fr_aife", .sources."data.gouv.fr_pe
 # Contrôle du répertoire DIROUT
 nbfilesjq=$(ls -al ${DIROUT}/*.jq | wc -l)
 echo "Nb de fichiers maintenant présents dans ${DIROUT} : ${nbfilesjq}"
+
+# Contrôle du fichier généré
+more ${DIROUT}/${FILEOUT}
