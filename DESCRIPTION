@@ -1,9 +1,9 @@
 Package: decp-monitoring
 Title: French Government Monitoring for DECP
 Version: 0.0.0.9000
-Package: gouvdown
-Title: French Government Design System for R Markdown
-Version: 0.0.0.9000
+Package: decp-monitoring
+Title: French Government UX Dashbourd for DECP
+Version: 0.0.0.9001
 Authors@R: 
     c(person(given = "Stéphane",
              family = "Trainel",
@@ -25,7 +25,8 @@ Imports:
     flexdashboard,
     DT,
     plotly,
-    RColorBrewer
+    RColorBrewer,
+    reshape
 Suggests: 
     testthat
 Encoding: UTF-8
