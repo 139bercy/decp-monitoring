@@ -51,4 +51,4 @@ nbfilesjq=$(ls -al ${DIROUT}/*.jq | wc -l)
 echo "Nb de fichiers maintenant présents dans ${DIROUT} : ${nbfilesjq}"
 
 # Contrôle du fichier généré
-more ${DIROUT}/${FILEOUT}
+cat ${DIROUT}/${FILEOUT}
