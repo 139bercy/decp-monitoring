@@ -18,8 +18,8 @@ echo "Nb de fichiers sur data.gouv.fr : ${#results[@]}"
 echo "Suppresion des anciens fichiers pour recalculer les statistiques"
 find ${DIROUT} -mtime +100 -exec rm -f {} \;
 
-# Suppression de tous les fichiers JQ
-find ${DIROUT}/*.jq -exec rm -f {} \;
+# Suppression de tous les fichiers JQ - PURGE du cache en cas de problème
+#find ${DIROUT}/*.jq -exec rm -f {} \;
 
 # Contrôle du répertoire DIROUT
 nbfilesjq=$(ls -al ${DIROUT}/*.jq 2> /dev/null | wc -l)
