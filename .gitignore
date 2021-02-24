@@ -1,3 +1,7 @@
+# MacOs
+*.icloud
+*.swp
+
 # RStudio
 .Rproj.user
 .Rhistory
