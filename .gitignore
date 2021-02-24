@@ -10,6 +10,7 @@
 
 # Shiny
 createboard.html
+scripts/*.html
 
 # Data
 output/
