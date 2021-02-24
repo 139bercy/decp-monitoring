@@ -1,6 +1,6 @@
 ---
 title: "Données essentielles de la commande publique"
-author: "MEF"
+author: "MEFR"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -116,7 +116,7 @@ Informations {data-icon="ion-information-circled"}
 
 #### Objectifs
 
-Ce tableau de bord permet de superviser le processus de construction du fichier global des données essentielles de la commande publique. Chaque jour, des nouvelles données sont transmises par les différents partenaires. Elles sont consolidées et mises à disposition en *opendata* sur [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-essentielles-de-la-commande-publique-fichiers-consolides/).
+Ce tableau de bord permet de suivre le processus de construction du fichier consolidé des données essentielles de la commande publique. En effet, chaque jour, des nouvelles données sont publiées par des éditeurs ou des portails acheteurs. Elles sont consolidées en un seul fichier et mises à disposition tous les matins (vers 9h) en *opendata* sur le site  [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-essentielles-de-la-commande-publique-fichiers-consolides/).
 
 Chaque année, il y a environ 300 000 marchés publics de plus de 40 000 euros HT.
 
