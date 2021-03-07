@@ -1,6 +1,7 @@
 # MacOs
 *.icloud
 *.swp
+.DS_Store
 
 # RStudio
 .Rproj.user
