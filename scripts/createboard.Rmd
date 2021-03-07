@@ -22,6 +22,8 @@ labels <- c('aife_dume' = "Aife / DUME", 'dgfip_pes' = "DGFiP / PES marchés",
             'marchespublicsinfo' = "MarchésPublics.info", 'atexomaximilien'="Atexo-Maximilien",
             'ternumbfc' = "Ternum-BFC", 'megalisbretagne' = "Megalis-Bretagne")
 mycolors <- brewer.pal(n = length(labels), name = "Accent")
+colors <- labels
+for (i in 0:length(labels)) colors[i] <- mycolors[i]
 nbmarches_max_paran = 300000
 ```
 
@@ -73,12 +75,16 @@ stats_reshape <- reshape(data=stats_cumul, idvar="date", varying = setdiff(colna
                  v.name=c("nbmarches"), timevar="source", new.row.names = NULL,
                  times=setdiff(colnames(stats_cumul), "date"), direction="long")
 
-stats_reshape %>%
-  group_by(date, source) %>%
-  summarise(models=sum(nbmarches)) %>%
-  plot_ly(x=~date, y=~models, group=~source, name = ~labels[source], 
-          type="scatter",color=~source, mode="lines", stackgroup=1)%>%
-  layout(yaxis=y, xaxis=x, autosize=T, hovermode="closest", legend=list(x=0.05, y=0.95), colorway = mycolors)
+p <- plot_ly() %>%
+  layout(yaxis=y, xaxis=x, autosize=T, hovermode="closest", legend=list(x=0.05, y=0.95), colorway=mycolors)
+for (id in unique(stats_reshape$source)) {
+  p <- add_trace(p, data=stats_reshape[which(stats_reshape$source==id),], x=~date, y=~nbmarches,
+                 type='scatter', mode='lines',
+                 line=list(color=~colors[source]),
+                 name = ~labels[source],
+                 stackgroup=1)
+}
+p 
 ```
 
 ### Répartition des marchés par source
@@ -87,11 +93,13 @@ df <- t(stats_cumul[nrow(stats_cumul),-1])
 colnames(df) <- c('values')
 df <- as.data.frame(df)
 df$labels <- rownames(df)
-df$labels <- labels[df$labels]
-plot_ly(df, labels = ~labels, values = ~values, type = "pie", hole=0.6, direction="clockwise",
-        textposition = 'inside', textinfo = 'label+percent', hoverinfo = 'text',
+df$labels2 <- labels[df$labels]
+df %>%
+  group_by(labels2) %>%
+  plot_ly(labels = ~labels2, values = ~values, type = "pie", hole=0.6, direction="clockwise",
+        textposition = 'inside', textinfo = 'label+percent', hoverinfo = 'text', marker = list(colors = ~colors[labels]), 
         text = ~paste(labels, ' : ', values, ' marchés transmis'), showlegend = FALSE) %>%
-  layout(autosize=T, colorway = mycolors)
+  layout(autosize=T)
 ```
 
 
@@ -116,7 +124,7 @@ Informations {data-icon="ion-information-circled"}
 
 #### Objectifs
 
-Ce tableau de bord permet de suivre le processus de construction du fichier consolidé des données essentielles de la commande publique. En effet, chaque jour, des nouvelles données sont publiées par des éditeurs ou des portails acheteurs. Elles sont consolidées en un seul fichier et mises à disposition tous les matins (vers 9h) en *opendata* sur le site  [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-essentielles-de-la-commande-publique-fichiers-consolides/).
+Ce tableau de bord permet de superviser le processus de construction du fichier global des données essentielles de la commande publique. Chaque jour, des nouvelles données sont transmises par les différents partenaires. Elles sont consolidées et mises à disposition en *opendata* sur [data.gouv.fr](https://www.data.gouv.fr/fr/datasets/donnees-essentielles-de-la-commande-publique-fichiers-consolides/).
 
 Chaque année, il y a environ 300 000 marchés publics de plus de 40 000 euros HT.
 
