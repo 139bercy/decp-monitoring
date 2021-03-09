@@ -71,10 +71,20 @@ x <- list(title = "date de récupération des données",
           ),
           rangeslider = list(type = 'date'))
 
+# Créer un vector myorder pour organiser le graphe par ordre croissant des quantités
+df <- t(stats_cumul[nrow(stats_cumul),-1])
+colnames(df) <- c('values')
+df <- as.data.frame(df)
+df <- arrange(df, desc(values))
+myorder <- rownames(df)
+
+# On restructure le df stats_cumul pour avoir les sources en variable et non plus en colonne
 stats_reshape <- reshape(data=stats_cumul, idvar="date", varying = setdiff(colnames(stats_cumul), "date"),
                  v.name=c("nbmarches"), timevar="source", new.row.names = NULL,
-                 times=setdiff(colnames(stats_cumul), "date"), direction="long")
+                 times=setdiff(colnames(stats_cumul), "date"), direction="long") %>%
+  arrange(match(source, myorder))
 
+# On crée le graphique avec une boucle pour avoir les traces dans le bon ordre
 p <- plot_ly() %>%
   layout(yaxis=y, xaxis=x, autosize=T, hovermode="closest", legend=list(x=0.05, y=0.95), colorway=mycolors)
 for (id in unique(stats_reshape$source)) {
