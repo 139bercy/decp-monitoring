@@ -22,8 +22,7 @@ labels <- c('aife_dume' = "Aife / DUME", 'dgfip_pes' = "DGFiP / PES marchés",
             'marchespublicsinfo' = "MarchésPublics.info", 'atexomaximilien'="Atexo-Maximilien",
             'ternumbfc' = "Ternum-BFC", 'megalisbretagne' = "Megalis-Bretagne")
 mycolors <- brewer.pal(n = length(labels), name = "Accent")
-colors <- labels
-for (i in 0:length(labels)) colors[i] <- mycolors[i]
+colors <- setNames(mycolors,names(labels))
 nbmarches_max_paran = 300000
 ```
 
