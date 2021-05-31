@@ -1,6 +1,7 @@
 require(dplyr)
 require(lubridate)
 
+# Traitement des comptages
 stats <- read.csv("scripts/output/decp-stats.csv")
 
 nrows <- nrow(stats)
@@ -44,3 +45,25 @@ colnames(nbmarches) <- c("nb", "nb_365J","nb_30J", "nb_10J", "nb_3J")
 nbmarches <- as.data.frame(nbmarches)
 
 save(stats2,stats_cumul,nbmarches, file = "scripts/output/stats.Rdata")
+
+# Traitements des montants
+
+montants <- read.csv("scripts/output/decp-montant.csv")
+
+nrows <- nrow(montants)
+ncols <- ncol(montants)
+
+seq <- seq(as.Date(montants[1,'date']),as.Date(montants[nrows,'date']), by="day")
+seq2 <- setdiff(seq,as.Date(montants$date))
+df.test <- as.data.frame(array(0, c(length(seq2), ncols)))
+colnames(df.test) <- colnames(montants)
+df.test$date <- as.Date(seq2, origin = "1970-01-01")
+
+montants2 <- rbind(df.test,montants)
+montants2 <- montants2[order(montants2$date),]
+
+montants2[is.na(montants2)] <- 0
+
+nrows <- nrow(montants2)
+montants_365J <- montants2[(nrows-365):nrows,] %>%
+  summarise_if(is.numeric, sum, na.rm=T)
